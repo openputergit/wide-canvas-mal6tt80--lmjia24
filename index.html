@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PR Firm - Neubrutalism Style</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neu-shadow: 4px 4px 0 rgba(0, 0, 0, 1);
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #f0f0f0;
+        }
+        .neu-button {
+            box-shadow: var(--neu-shadow);
+            border: 2px solid black;
+            transition: all 0.2s ease;
+        }
+        .neu-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 1);
+        }
+        .neu-card {
+            box-shadow: var(--neu-shadow);
+            border: 2px solid black;
+        }
+        .newsletter-form {
+            box-shadow: var(--neu-shadow);
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-white neu-card p-4 m-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">PR FIRM</h1>
+            <div class="space-x-4">
+                <a href="#" class="neu-button px-4 py-2 bg-yellow-300">Home</a>
+                <a href="#" class="neu-button px-4 py-2 bg-blue-300">Services</a>
+                <a href="#" class="neu-button px-4 py-2 bg-green-300">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4">
+        <!-- Hero Section -->
+        <section class="neu-card bg-white p-8 mb-8">
+            <h2 class="text-4xl font-bold mb-4">Your Story, Our Expertise</h2>
+            <p class="text-xl mb-6">We craft compelling narratives and deliver impactful PR strategies</p>
+            <button class="neu-button bg-pink-300 px-6 py-3 text-lg font-bold">Get Started</button>
+        </section>
+
+        <!-- News Section -->
+        <section class="neu-card bg-white p-8 mb-8">
+            <h3 class="text-2xl font-bold mb-4">Latest News</h3>
+            <div id="newsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- News items will be populated here -->
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="newsletter-form bg-white p-8">
+            <h3 class="text-2xl font-bold mb-4">Subscribe to Our Newsletter</h3>
+            <form id="newsletterForm" class="space-y-4">
+                <input type="email" placeholder="Enter your email" class="w-full p-2 neu-button bg-white" required>
+                <button type="submit" class="neu-button bg-purple-300 px-6 py-3 font-bold">Subscribe</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="bg-white neu-card p-4 m-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>© 2023 PR Firm. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // News API Integration
+        async function fetchNews() {
+            try {
+                const response = await axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_API_KEY');
+                const newsContainer = document.getElementById('newsContainer');
+                
+                response.data.articles.slice(0, 6).forEach(article => {
+                    const newsCard = document.createElement('div');
+                    newsCard.className = 'neu-card bg-white p-4';
+                    newsCard.innerHTML = `
+                        <h4 class="font-bold mb-2">${article.title}</h4>
+                        <p class="mb-2">${article.description || ''}</p>
+                        <a href="${article.url}" target="_blank" class="neu-button inline-block bg-yellow-200 px-4 py-2">Read More</a>
+                    `;
+                    newsContainer.appendChild(newsCard);
+                });
+            } catch (error) {
+                console.error('Error fetching news:', error);
+            }
+        }
+
+        // Newsletter Form Handler
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.elements[0].value;
+            // Here you would typically send this to your backend
+            alert(`Thank you for subscribing with ${email}!`);
+            e.target.reset();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchNews();
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
